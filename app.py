@@ -29,7 +29,7 @@ def img_gen(prompt, img):
 
 @app.post('/generate_interior/')
 async def generate_interior():
-    file_path = '/kaggle/input/home-int/home.json'  # Update with your JSON file path
+    file_path = 'home.json'  # Update with your JSON file path
     data = json_file(file_path)
     place = data['room']
     ref("hmmmm.......")
