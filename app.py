@@ -33,14 +33,16 @@ async def generate_interior():
     data = json_file(file_path)
     place = data['room']
     ref("hmmmm.......")
-    dim = data['dim']
+    dim = data['size']
     ref("I think that is a fit!")
-    col = data['col']
+    col = data['color']
     ref("Great choice bruh ^-^")
+    view = data['view']
+    ref('Please be patient . . .')
     img = int(data['number'])
     ref('Cooking the interior . . . .')
     
-    prompt = f"Home interior design top view for {place} with {col} color of dimension {dim} metre"
+    prompt = f"Home interior design {view} for {place} with {col} color of dimension {dim} metre"
     images = img_gen(prompt)
 
     for i in range(img):
