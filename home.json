@@ -1,6 +1,6 @@
 {
-	"room" : "bedroom",
-	"dim" : "10x10",
-	"col" : "black",
-	"number" : "2"
+    "room": "kitchen",
+    "size" : "10x10",
+    "color" : "white",
+    "view" : "front view"
 }
