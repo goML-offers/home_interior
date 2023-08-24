@@ -1,57 +1,36 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from diffusers import DiffusionPipeline
 import torch
 import time
-import json
 
 app = FastAPI()
+
+class InteriorRequest(BaseModel):
+    place: str
+    dimensions: str
+    color: str
+    view: str
+    num_images: int
 
 pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
 pipe.to('cuda')
 
-def ref(txt):
-    result = ""
-    for i in txt:
-        result += i
-        time.sleep(0.2)
-    return result
-
-def json_file(jsonfi):
-    with open(jsonfi, 'r') as json_file:
-        data = json.load(json_file)
-    return data
-
-def img_gen(prompt, img):
+def generate_interior_images(prompt, num_images):
     generated_images = []
-    for i in range(img):
+    for _ in range(num_images):
         generated_images.append(pipe(prompt).images[0])
     return generated_images
 
-@app.post('/generate_interior/')
-async def generate_interior():
-    file_path = 'home.json'  # Update with your JSON file path
-    data = json_file(file_path)
-    place = data['room']
-    ref("hmmmm.......")
-    dim = data['size']
-    ref("I think that is a fit!")
-    col = data['color']
-    ref("Great choice bruh ^-^")
-    view = data['view']
-    ref('Please be patient . . .')
-    img = int(data['number'])
-    ref('Cooking the interior . . . .')
-    
-    prompt = f"Home interior design {view} for {place} with {col} color of dimension {dim} metre"
-    images = img_gen(prompt)
+@app.post("/generate_interior/")
+async def generate_interior_images_api(request: InteriorRequest):
+    prompt = f"Home interior design {request.view} for {request.place} with {request.color} color of dimension {request.dimensions} metre"
+    images = generate_interior_images(prompt, request.num_images)
 
-    for i in range(img):
-        ref(f"Generating image {i+1}...")
-        image = pipe(prompt).images[0]
-        image.save(f'result_{i+1}.jpg')
-        images.append(image)
-    
-    return {
-        "Message": "Successfully Generated! Check the directory to find the images",
-        "images": images
-    }
+    result_filenames = []
+    for idx, image in enumerate(images, start=1):
+        filename = f'result_{idx}.jpg'
+        image.save(filename)
+        result_filenames.append(filename)
+
+    return {"message": "Images generated successfully", "image_filenames": result_filenames}
