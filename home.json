@@ -1,6 +1,7 @@
 {
     "room": "kitchen",
-    "size" : "10x10",
-    "color" : "white",
-    "view" : "front view"
+    "size": "10x10",
+    "color": "white",
+    "view": "front view",
+    "number": "2"
 }
