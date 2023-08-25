@@ -13,8 +13,8 @@ class InteriorRequest(BaseModel):
     view: str
     num_images: int
 
-pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
-pipe.to('cuda')
+pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float32, use_safetensors=True, variant="fp16")
+commandline_args = os.environ.get('COMMANDLINE_ARGS', "--skip-torch-cuda-test --no-half")
 
 def generate_interior_images(prompt, num_images):
     generated_images = []
