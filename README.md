@@ -36,5 +36,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000
     "view": "Panoramic",
     "num_images": 3
 }
+
+
 4.The API will respond with a list of generated image filenames.
 
