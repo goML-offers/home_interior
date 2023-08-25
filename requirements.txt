@@ -4,4 +4,4 @@ transformers
 accelerate 
 safetensors
 fastapi
-opencv-python
+uvicorn
